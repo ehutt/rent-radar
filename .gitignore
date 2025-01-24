@@ -1,3 +1,17 @@
+# pyenv
+.python-version
+.venv
+
+# IDE
+.idea
+.vscode
+
+# Mac
+.DS_STORE
+
+# Env
+.env
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

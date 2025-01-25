@@ -1,21 +1,27 @@
+import logging
 import time
 from typing import Any
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
 
+from click import option
+from fake_useragent import UserAgent
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
 
 from rent_radar.scraping import paginate_search_results
 from rent_radar.settings import settings
-
-import logging
 
 logger = logging.Logger(__name__)
 
 
 def get_listing_summaries() -> list[dict[str, Any]]:
-    driver = webdriver.Chrome()
+    options = Options()
+    ua = UserAgent()
+    user_agent = ua.random
+    print(user_agent)
+    options.add_argument(f"user-agent={user_agent}")
+    driver = webdriver.Chrome(options=options)
 
     listings = []
     page_urls = paginate_search_results(settings.ZILLOW_BASE_URL, 20)
@@ -23,7 +29,7 @@ def get_listing_summaries() -> list[dict[str, Any]]:
     for url in page_urls:
         page = driver.get(url)
         time.sleep(3)
-        # look for human check
+        # look for human check and handle if it exists
         button = driver.find_element(By.XPATH, "//*[contains(text(), 'Hold')]")
         if button:
             waiting = True
@@ -34,11 +40,11 @@ def get_listing_summaries() -> list[dict[str, Any]]:
             ActionChains(driver).move_to_element(button).click_and_hold(
                 button
             ).perform()
-        # listing_card = driver.find_element(
-        #     By.XPATH,
-        #     "/html/body/div[1]/div/div[2]/div/div/div[1]/div[1]/ul/li[1]/div/div/article/div/div[1]",
-        # )
-        # logger.info(listing_card.text)
+        listing_cards = driver.find_elements(
+            By.CLASS_NAME,
+            "div.StyledPropertyCardDataWrapper-c11n-8-107-0__sc-hfbvv9-0.cdQcZn.property-card-data",
+        )
+        logger.info(listing_cards)
 
     driver.close()
 

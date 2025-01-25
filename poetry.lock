@@ -330,6 +330,19 @@ files = [
 ]
 
 [[package]]
+name = "fake-useragent"
+version = "2.0.3"
+description = "Up-to-date simple useragent faker with real world database"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+markers = "python_version == \"3.11\" or python_version >= \"3.12\""
+files = [
+    {file = "fake_useragent-2.0.3-py3-none-any.whl", hash = "sha256:8bae50abb72c309a5b3ae2f01a0b82426613fd5c4e2a04dca9332399ec44daa1"},
+    {file = "fake_useragent-2.0.3.tar.gz", hash = "sha256:af86a26ef8229efece8fed529b4aeb5b73747d889b60f01cd477b6f301df46e6"},
+]
+
+[[package]]
 name = "h11"
 version = "0.14.0"
 description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
@@ -1049,4 +1062,4 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "e78d868525c5bff3b533e0b3b1ea7ce467596e1f959dcb1a688c0e97bc3c2a16"
+content-hash = "d84e640a442e0a4cc000537220da3152ed939a27bd57f9d2381280c513ba4780"

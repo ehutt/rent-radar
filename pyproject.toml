@@ -15,6 +15,7 @@ pydantic-settings = "^2.7.1"
 black = "^24.10.0"
 isort = "^5.13.2"
 selenium = "^4.28.1"
+fake-useragent = "^2.0.3"
 
 
 [build-system]

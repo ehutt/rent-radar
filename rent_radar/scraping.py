@@ -6,9 +6,11 @@ from typing import Any
 import requests
 from bs4 import BeautifulSoup
 
-from rent_radar.settings import settings
+from rent_radar.settings import Settings
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s:%(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 def get_soup(url: str, headers: dict = {}) -> BeautifulSoup | None:

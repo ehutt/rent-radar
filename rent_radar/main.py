@@ -1,10 +1,14 @@
 import datetime
 import logging
+from enum import Enum
 
 import pandas as pd
 
-from rent_radar.analysis import (can_determine_price_change, exceeds_fmr_rate,
-                                 exceeds_price_increase)
+from rent_radar.analysis import (
+    can_determine_price_change,
+    exceeds_fmr_rate,
+    exceeds_price_increase,
+)
 from rent_radar.clients import RentCastClient
 from rent_radar.db import RentCastDB
 from rent_radar.settings import Settings
@@ -15,6 +19,11 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 settings = Settings()
+
+
+class ViolationType(Enum):
+    FMR_RATE = "fmr_rate"
+    PRICE_INCREASE = "price_increase"
 
 
 def main():
@@ -47,7 +56,8 @@ def search_city(
 ):
     logger.info("Starting search for %s", city_name)
     offset = 0
-    while True:
+    search_ended = False
+    while not search_ended:
         # 1. Scrape summary listings (ACTIVE rentals in specified city)
         listings = client.get_listing_batch(
             city=format_city_name(city_name.strip()),
@@ -58,31 +68,33 @@ def search_city(
         if (
             len(listings) < 500
         ):  # if less than 500 results, we've reached the end of the listings
-            break
+            search_ended = True
         offset += 1
         # 2. Check for price gouging violations
         for listing in listings:
-            # Check if listing exceeds the FMR rate
+            # 2.a. Check if listing exceeds the FMR rate
             fmr_rate_violation = exceeds_fmr_rate(
                 listing, settings.max_fmr_rate, fmr_data
             )
             if fmr_rate_violation:
-                # If violation, save to database
+                # 3. If violation, save to database
                 db.upsert_listing(
-                    listing, violation_type="fmr_rate", date_updated=access_date
+                    listing,
+                    violation_type=ViolationType.FMR_RATE.value,
+                    date_updated=access_date,
                 )
+            # 2.b. Check if listing exceeds the price increase threshold
             if can_determine_price_change(listing["history"], settings.reference_date):
-                # Check if listing exceeds the price increase threshold
                 price_violation = exceeds_price_increase(
                     listing["history"],
                     settings.reference_date,
                     settings.price_increase_threshold,
                 )
                 if price_violation:
-                    # If violation, save to database
+                    # 3. If violation, save to database
                     db.upsert_listing(
                         listing,
-                        violation_type="price_increase",
+                        violation_type=ViolationType.PRICE_INCREASE.value,
                         date_updated=access_date,
                     )
 

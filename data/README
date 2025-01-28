@@ -1,6 +1,18 @@
-# Data Source
+# Data Sources
+
+### SAFMR_2025_LA_COUNTY.csv
+
 HUD's Small Area Fair Market Rates, 2025, for LA County 
 
 [Source Link](https://www.huduser.gov/portal/datasets/fmr/fmrs/FY2025_code/2025summary.odn?cbsasub=METRO31080MM4480&year=2025&fmrtype=Final)
+
+Date Accessed: January 27, 2025 
+
+
+### LA_COUNTY_CITIES.csv
+
+List of cities in LA County. 
+
+[Source Link](https://lacounty.gov/newsroom/public-information/la-county-cities/)
 
 Date Accessed: January 27, 2025 

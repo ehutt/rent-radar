@@ -26,7 +26,7 @@ def prepare_data_for_table(data, table_columns):
     return {key: data.get(key, None) for key in table_columns}
 
 
-class Database:
+class RentCastDB:
     def __init__(self, database_file: str):
         """Initializes the SQLite database connection and creates the necessary tables if they do not exist."""
         self.database_file = database_file
@@ -42,6 +42,8 @@ class Database:
             """
             CREATE TABLE IF NOT EXISTS properties (
             id TEXT PRIMARY KEY,
+            violation_type TEXT,
+            date_updated TEXT,
             formattedAddress TEXT, 
             addressLine1 TEXT, 
             addressLine2 TEXT, 
@@ -117,12 +119,20 @@ class Database:
         except sqlite3.OperationalError as e:
             logging.exception(e)
 
-    def upsert_tables(self, property_data: dict[str, Any]):
+    def upsert_listing(
+        self,
+        property_data: dict[str, Any],
+        violation_type: str = "",
+        date_updated: str = "",
+    ) -> None:
         """
         Insert or update the property data.
         """
         # Flatten the dictionary excluding 'history'
         main_table_data = flatten_dict(property_data, exclude_keys=["history"])
+        main_table_data.update(
+            {"violation_type": violation_type, "date_updated": date_updated}
+        )
 
         # Upsert into `properties` table
         self._upsert_one("properties", main_table_data)

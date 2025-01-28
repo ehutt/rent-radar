@@ -1,18 +1,21 @@
 import datetime
+from datetime import date
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    DATABASE_FILE = "rental_listings.db"
-    FLAGGED_CSV_FILE = "flagged_listings.csv"
+    database_file: str = "flagged_listings.db"
+    fmr_data_file: str = "data/SAFMR_2025_LA_COUNTY.csv"
+    city_names_file: str = "data/LA_COUNTY_CITIES.csv"
 
-    # Reference date for anti-gouging check
-    REFERENCE_DATE = datetime.date(year=2025, month=1, day=6)
-    PRICE_INCREASE_THRESHOLD = 0.10  # 10% by law
+    # Reference data for anti-gouging check
+    reference_date: date = datetime.date(year=2025, month=1, day=6)
+    price_increase_threshold: float = 0.10  # 10% by law
+    max_fmr_rate: float = 1.60  # 160% of FMR is the maximum allowed by law
 
-    # Zillow rental search for Los Angeles County (has ~40k results)
-    ZILLOW_BASE_URL = "https://www.zillow.com/homes/for_rent/Los-Angeles-County-CA/"
+    # RentCast API
+    rent_cast_api_key: str
+    rent_cast_base_url: str = "https://api.rentcast.io/v1/listings/rental/long-term?"
 
-
-settings = Settings()
+    model_config = SettingsConfigDict(env_prefix="RENT_RADAR_", env_file=".env")

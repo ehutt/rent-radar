@@ -1,13 +1,10 @@
 # rent-radar
 
----
 
 RentRadar is a tool to detect and report landlord price gouging (specifically in Los Angeles in the aftermath of the 2025 fires). 
 
 
 ## Setup
-
----
 
 1. Install the following tools if you don't already have them:
     - [PyEnv](
@@ -28,8 +25,6 @@ RentRadar is a tool to detect and report landlord price gouging (specifically in
 
 ## How it Works 
 
----
-
 1. RentRadar uses the [Rent Cast API](https://developers.rentcast.io/reference/rental-listings-long-term) to identify active rental listings for the cities in LA County. 
 2. The current price of each listing is compared to the Small Area Fair Market Rate (SAFMR) for the area based on its zip code and the number of bedrooms. If the current price exceeds 160% of the SAFMR, the listing is flagged as a potential violation of the law.
 3. If the listing has a price history, RentRadar will further check to see if there has been a 10% increase since before January 6, 2025. If so, the listing will be flagged as a potential violation of the law. 
@@ -37,8 +32,6 @@ RentRadar is a tool to detect and report landlord price gouging (specifically in
 
 ## Rent Gouging FAQs
 Credit: [The Rent Brigade](https://docs.google.com/document/d/1hn0IKHW4kjbthblhoEA4MaqhgIMHZALUqEUj-G55CSI/edit?tab=t.0)
-
----
 
 ### What is rent gouging?
 Rent gouging is the predatory practice of landlords exploiting tenants by demanding inflated rent prices. Legally, it occurs when landlords raise rents beyond the allowed limit during a declared State of Emergency. Since January 7, 2025, LA County has been under such a declaration, which prohibits landlords from increasing rents by more than 10% of their pre-listed price as of  one year before. Specific rules also apply to new listings and short-term rentals (STRs). 

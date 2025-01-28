@@ -16,14 +16,6 @@ logger = logging.getLogger(__name__)
 
 settings = Settings()
 
-CITIES = [
-    "Los%20Angeles",
-    "Santa%20Monica",
-    "Beverly%20Hills",
-    "Pasadena",
-    "Glendale",
-]  # todo add more cities
-
 
 def main():
     db = RentCastDB(settings.database_file)
